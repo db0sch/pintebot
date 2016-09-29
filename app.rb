@@ -1,13 +1,15 @@
 require 'sinatra'
+require 'dotenv'
+Dotenv.load
+require 'sinatra/activerecord'
+require './config/environments' #database configuration
 require 'httparty'
 require 'json'
-require 'dotenv'
 require 'geocoder'
-Dotenv.load
 
 post '/gateway' do
   unless params[:user_id] == "USLACKBOT"
-    
+
     message = params[:text]
     nlp_result = recast_api(message)
     # p nlp_result
