@@ -48,7 +48,6 @@ post '/gateway' do
     # UPDATE THE QUERY INSTANCE WITH NLP RESULT, AND COORDINATES
     query.update(nlp_result: nlp_result, drink: nlp_result['results']['intents'].first, geocode: coordinates)
 
-    # nlp_result = recast_api(message)
 
     if nlp_result['results']['sentences'].first['entities'].key?('location')
       address = nlp_result['results']['sentences'].first['entities']['location']
