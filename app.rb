@@ -6,30 +6,33 @@ require 'geocoder'
 Dotenv.load
 
 post '/gateway' do
-  message = params[:text]
-  nlp_result = recast_api(message)
-  p nlp_result
+  unless params[:user_id] == "USLACKBOT"
+    
+    message = params[:text]
+    nlp_result = recast_api(message)
+    # p nlp_result
 
-  if nlp_result['results']['sentences'].first['entities'].key?('location')
-    address = nlp_result['results']['sentences'].first['entities']['location']
-    # geocode = Geocoder.search(address)
-    # coordinates = geocode.first.data["geometry"]["location"]
-    coordinates = {}
-    coordinates['lat'] = nlp_result['results']['sentences'].first['entities']['location'].first['lat']
-    coordinates['lng'] = nlp_result['results']['sentences'].first['entities']['location'].first['lng']
-    p coordinates
-    resp = foursquare_api(coordinates)
-    p resp
-    unless resp['response']['venues'].empty?
-      bar_name = resp['response']['venues'].first['name']
-      p bar_name
-      bar_address = resp['response']['venues'].first['location']['address']
-      p bar_address
-      bar_distance = resp['response']['venues'].first['location']['distance']
-      respond_message "You can have a drink at #{bar_name}, #{bar_address}. Distance: #{bar_distance}m"
+    if nlp_result['results']['sentences'].first['entities'].key?('location')
+      address = nlp_result['results']['sentences'].first['entities']['location']
+      # geocode = Geocoder.search(address)
+      # coordinates = geocode.first.data["geometry"]["location"]
+      coordinates = {}
+      coordinates['lat'] = nlp_result['results']['sentences'].first['entities']['location'].first['lat']
+      coordinates['lng'] = nlp_result['results']['sentences'].first['entities']['location'].first['lng']
+      p coordinates
+      resp = foursquare_api(coordinates)
+      p resp
+      unless resp['response']['venues'].empty?
+        bar_name = resp['response']['venues'].first['name']
+        p bar_name
+        bar_address = resp['response']['venues'].first['location']['address']
+        p bar_address
+        bar_distance = resp['response']['venues'].first['location']['distance']
+        respond_message "You can have a drink at #{bar_name}, #{bar_address}. Distance: #{bar_distance}m"
+      end
+    else
+      return respond_message "Sorry. I need an address."
     end
-  else
-    return respond_message "Sorry. I need an address."
   end
 end
 
