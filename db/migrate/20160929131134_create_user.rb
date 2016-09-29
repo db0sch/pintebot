@@ -5,5 +5,6 @@ class CreateUser < ActiveRecord::Migration
      t.string :slackid
      t.string :username
      t.timestamps null: false
+   end
   end
 end

@@ -1,6 +1,6 @@
 development:
   adapter: postgresql
-  database: development
-  username: <%= ENV['PG_USER'] %>
-  password: <%= ENV['PG_PASS'] %>
-  host: localhost
+  database: pintebot_development
+  # username: dbo
+  # password:
+  # host: localhost

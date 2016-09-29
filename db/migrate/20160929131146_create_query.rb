@@ -10,5 +10,6 @@ class CreateQuery < ActiveRecord::Migration
       t.string :drink
       t.references :user, index: true, foreign_key: true
       t.timestamps null: false
+    end
   end
 end
