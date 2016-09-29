@@ -1,0 +1,6 @@
+development:
+  adapter: postgresql
+  database: pintebot_development
+  # username: dbo
+  # password:
+  # host: localhost
