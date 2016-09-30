@@ -7,7 +7,7 @@ module Nlp
       body: { text: message },
       headers: { 'Authorization' => "Token #{ENV['RECAST_DEV_ACCESS_TOKEN']}" }
     )
-
+    p result.body
     return JSON.parse(result.body)
   end
 end
