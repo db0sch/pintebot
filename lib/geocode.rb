@@ -1,9 +1,9 @@
-module Geocoder
-  def get_coordinates
-    if nlp_result['results']['sentences'].first['entities'].key?('location')
+module Geocode
+  def get_coordinates(data)
+    if data['results']['sentences'].first['entities'].key?('location')
       coordinates = {}
-      coordinates['lat'] = nlp_result['results']['sentences'].first['entities']['location'].first['lat']
-      coordinates['lng'] = nlp_result['results']['sentences'].first['entities']['location'].first['lng']
+      coordinates['lat'] = data['results']['sentences'].first['entities']['location'].first['lat']
+      coordinates['lng'] = data['results']['sentences'].first['entities']['location'].first['lng']
       return coordinates
     end
   end
