@@ -22,13 +22,12 @@ post '/gateway' do
   unless params[:user_id] == "USLACKBOT"
 
     # FIND OR CREATE THE USER
-    p params
     unless user = User.find_by_slackid(params[:user_id])
       user = User.create!(slackid: params[:user_id], username: params[:user_name])
+      p "new user with the id #{user.id}"
     else
       p "We found the user #{user.slackid}"
     end
-    p user
 
     # CREATE A NEW QUERY
     query = Query.create!({
@@ -38,11 +37,9 @@ post '/gateway' do
             slack_team: params[:team_id],
             slack_channel: params[:channel_id]
             })
-    p query
 
     # ANALYSE THE TEXT (NLP - RECAST)
     nlp_result = recast_analyse(query.text)
-    p nlp_result
 
     # Get coordinates from the NLP results (if location // otherwise, ask for an address)
     return respond_message "Sorry. I need an address." unless coordinates = get_coordinates(nlp_result)
@@ -51,8 +48,7 @@ post '/gateway' do
     query.update(nlp_result: nlp_result, drink: nlp_result['results']['intents'].first, geocode: coordinates)
 
     # CALL FOURSQUARE api
-    result = get_nearest_place(coordinates)
-    p result
+    return respond_message "Sorry, no cool bars around, bro!" unless result = get_nearest_place(coordinates)
 
     # CREATE THE REPLY HASH
     reply_args = {
